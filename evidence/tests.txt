@@ -1,33 +1,36 @@
+test_dropped_payment_connection_returns_502_and_attributes_failure (test_error_paths.ErrorPathTest.test_dropped_payment_connection_returns_502_and_attributes_failure) ... ok
+test_invalid_delay_configuration_is_a_server_error (test_error_paths.ErrorPathTest.test_invalid_delay_configuration_is_a_server_error) ... ok
+test_invalid_order_still_returns_client_error (test_error_paths.ErrorPathTest.test_invalid_order_still_returns_client_error) ... ok
 test_success_timeout_and_recovery (test_integration.CheckoutPaymentTest.test_success_timeout_and_recovery) ... Started Payment and Checkout. Checkout timeout=0.300s; injected delay=0.800s.
 
 PHASE success: Payment delay=0.000s
-POST /checkout X-Request-ID=success-01 -> HTTP 200 9.207ms {"status": "confirmed", "order_id": "order-success-01", "payment": {"status": "paid", "order_id": "order-success-01", "request_id": "success-01"}, "request_id": "success-01"}
-POST /checkout X-Request-ID=success-02 -> HTTP 200 0.712ms {"status": "confirmed", "order_id": "order-success-02", "payment": {"status": "paid", "order_id": "order-success-02", "request_id": "success-02"}, "request_id": "success-02"}
-POST /checkout X-Request-ID=success-03 -> HTTP 200 0.643ms {"status": "confirmed", "order_id": "order-success-03", "payment": {"status": "paid", "order_id": "order-success-03", "request_id": "success-03"}, "request_id": "success-03"}
-SUMMARY {"phase": "success", "requests": 3, "errors": 0, "phase_error_rate": 0.0, "cumulative_error_rate": 0.0, "mean_latency_ms": 3.521}
+POST /checkout X-Request-ID=success-01 -> HTTP 200 9.169ms {"status": "confirmed", "order_id": "order-success-01", "payment": {"status": "paid", "order_id": "order-success-01", "request_id": "success-01"}, "request_id": "success-01"}
+POST /checkout X-Request-ID=success-02 -> HTTP 200 0.768ms {"status": "confirmed", "order_id": "order-success-02", "payment": {"status": "paid", "order_id": "order-success-02", "request_id": "success-02"}, "request_id": "success-02"}
+POST /checkout X-Request-ID=success-03 -> HTTP 200 0.694ms {"status": "confirmed", "order_id": "order-success-03", "payment": {"status": "paid", "order_id": "order-success-03", "request_id": "success-03"}, "request_id": "success-03"}
+SUMMARY {"phase": "success", "requests": 3, "errors": 0, "phase_error_rate": 0.0, "cumulative_error_rate": 0.0, "mean_latency_ms": 3.544}
 GET /health -> HTTP 200; both original service processes still running
 
 PHASE failure: Payment delay=0.800s
-POST /checkout X-Request-ID=failure-01 -> HTTP 504 302.214ms {"error": "payment_timeout", "request_id": "failure-01"}
-POST /checkout X-Request-ID=failure-02 -> HTTP 504 303.504ms {"error": "payment_timeout", "request_id": "failure-02"}
-POST /checkout X-Request-ID=failure-03 -> HTTP 504 305.238ms {"error": "payment_timeout", "request_id": "failure-03"}
-SUMMARY {"phase": "failure", "requests": 3, "errors": 3, "phase_error_rate": 1.0, "cumulative_error_rate": 0.5, "mean_latency_ms": 303.652}
+POST /checkout X-Request-ID=failure-01 -> HTTP 504 303.742ms {"error": "payment_timeout", "request_id": "failure-01"}
+POST /checkout X-Request-ID=failure-02 -> HTTP 504 304.569ms {"error": "payment_timeout", "request_id": "failure-02"}
+POST /checkout X-Request-ID=failure-03 -> HTTP 504 304.995ms {"error": "payment_timeout", "request_id": "failure-03"}
+SUMMARY {"phase": "failure", "requests": 3, "errors": 3, "phase_error_rate": 1.0, "cumulative_error_rate": 0.5, "mean_latency_ms": 304.435}
 GET /health -> HTTP 200; both original service processes still running
 
 PHASE recovery: Payment delay=0.000s
-POST /checkout X-Request-ID=recovery-01 -> HTTP 200 1.728ms {"status": "confirmed", "order_id": "order-recovery-01", "payment": {"status": "paid", "order_id": "order-recovery-01", "request_id": "recovery-01"}, "request_id": "recovery-01"}
-POST /checkout X-Request-ID=recovery-02 -> HTTP 200 2.128ms {"status": "confirmed", "order_id": "order-recovery-02", "payment": {"status": "paid", "order_id": "order-recovery-02", "request_id": "recovery-02"}, "request_id": "recovery-02"}
-POST /checkout X-Request-ID=recovery-03 -> HTTP 200 1.675ms {"status": "confirmed", "order_id": "order-recovery-03", "payment": {"status": "paid", "order_id": "order-recovery-03", "request_id": "recovery-03"}, "request_id": "recovery-03"}
-POST /checkout X-Request-ID=recovery-04 -> HTTP 200 1.410ms {"status": "confirmed", "order_id": "order-recovery-04", "payment": {"status": "paid", "order_id": "order-recovery-04", "request_id": "recovery-04"}, "request_id": "recovery-04"}
-POST /checkout X-Request-ID=recovery-05 -> HTTP 200 1.439ms {"status": "confirmed", "order_id": "order-recovery-05", "payment": {"status": "paid", "order_id": "order-recovery-05", "request_id": "recovery-05"}, "request_id": "recovery-05"}
-POST /checkout X-Request-ID=recovery-06 -> HTTP 200 1.290ms {"status": "confirmed", "order_id": "order-recovery-06", "payment": {"status": "paid", "order_id": "order-recovery-06", "request_id": "recovery-06"}, "request_id": "recovery-06"}
-SUMMARY {"phase": "recovery", "requests": 6, "errors": 0, "phase_error_rate": 0.0, "cumulative_error_rate": 0.25, "mean_latency_ms": 1.612}
+POST /checkout X-Request-ID=recovery-01 -> HTTP 200 2.538ms {"status": "confirmed", "order_id": "order-recovery-01", "payment": {"status": "paid", "order_id": "order-recovery-01", "request_id": "recovery-01"}, "request_id": "recovery-01"}
+POST /checkout X-Request-ID=recovery-02 -> HTTP 200 2.607ms {"status": "confirmed", "order_id": "order-recovery-02", "payment": {"status": "paid", "order_id": "order-recovery-02", "request_id": "recovery-02"}, "request_id": "recovery-02"}
+POST /checkout X-Request-ID=recovery-03 -> HTTP 200 1.985ms {"status": "confirmed", "order_id": "order-recovery-03", "payment": {"status": "paid", "order_id": "order-recovery-03", "request_id": "recovery-03"}, "request_id": "recovery-03"}
+POST /checkout X-Request-ID=recovery-04 -> HTTP 200 2.074ms {"status": "confirmed", "order_id": "order-recovery-04", "payment": {"status": "paid", "order_id": "order-recovery-04", "request_id": "recovery-04"}, "request_id": "recovery-04"}
+POST /checkout X-Request-ID=recovery-05 -> HTTP 200 2.449ms {"status": "confirmed", "order_id": "order-recovery-05", "payment": {"status": "paid", "order_id": "order-recovery-05", "request_id": "recovery-05"}, "request_id": "recovery-05"}
+POST /checkout X-Request-ID=recovery-06 -> HTTP 200 1.367ms {"status": "confirmed", "order_id": "order-recovery-06", "payment": {"status": "paid", "order_id": "order-recovery-06", "request_id": "recovery-06"}, "request_id": "recovery-06"}
+SUMMARY {"phase": "recovery", "requests": 6, "errors": 0, "phase_error_rate": 0.0, "cumulative_error_rate": 0.25, "mean_latency_ms": 2.17}
 GET /health -> HTTP 200; both original service processes still running
 
 PASS: success, timeout detection, health, shared IDs, metrics, and recovery verified.
 ok
 
 ----------------------------------------------------------------------
-Ran 1 test in 1.927s
+Ran 4 tests in 1.989s
 
 OK

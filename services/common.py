@@ -52,6 +52,10 @@ class Metrics:
             return "\n".join(rows) + "\n"
 
 
+class InvalidRequest(ValueError):
+    """A validation failure in the caller's request, not service configuration."""
+
+
 class Handler(BaseHTTPRequestHandler):
     # HTTP/1.0 closes each connection; ThreadingHTTPServer keeps delayed work
     # from blocking health checks and other requests.
@@ -76,6 +80,27 @@ class Handler(BaseHTTPRequestHandler):
         else:
             self.send(404, {"error": "not_found"})
 
+    def read_order(self):
+        try:
+            length = int(self.headers.get("Content-Length", "0"))
+            if not 0 < length <= 16384:
+                raise ValueError("body must be 1–16384 bytes")
+            data = json.loads(self.rfile.read(length))
+            if not isinstance(data, dict) or not isinstance(data.get("order_id"), str) or not data["order_id"]:
+                raise ValueError("order_id must be a nonempty string")
+            return data
+        except (ValueError, UnicodeDecodeError) as exc:
+            raise InvalidRequest(str(exc)) from exc
+
+    def send_business_response(self, status, body):
+        try:
+            self.send(status, body)
+            return status
+        except (BrokenPipeError, ConnectionResetError):
+            # Only a failed write to our caller means the client disconnected.
+            log(self.server.service, "client_disconnected", request_id=self.request_id)
+            return 499
+
     def do_POST(self):
         candidate = self.headers.get("X-Request-ID", "")
         self.request_id = (candidate if re.fullmatch(r"[A-Za-z0-9._-]{1,128}", candidate)
@@ -89,28 +114,18 @@ class Handler(BaseHTTPRequestHandler):
             if self.path != self.server.business_path:
                 status, body = 404, {"error": "not_found"}
             else:
-                length = int(self.headers.get("Content-Length", "0"))
-                if not 0 < length <= 16384:
-                    raise ValueError("body must be 1–16384 bytes")
-                data = json.loads(self.rfile.read(length))
-                if not isinstance(data, dict) or not isinstance(data.get("order_id"), str) or not data["order_id"]:
-                    raise ValueError("order_id must be a nonempty string")
-                status, body = self.process(data)
+                status, body = self.process(self.read_order())
             body["request_id"] = self.request_id
-            self.send(status, body)
-        except (ValueError, UnicodeDecodeError) as exc:
-            status = 400
-            self.send(status, {"error": "invalid_request", "detail": str(exc),
-                               "request_id": self.request_id})
-        except (BrokenPipeError, ConnectionResetError):
-            # Payment can finish after Checkout has already timed out.
-            status = 499
-            log(service, "client_disconnected", request_id=self.request_id)
+            status = self.send_business_response(status, body)
+        except InvalidRequest as exc:
+            status = self.send_business_response(
+                400, {"error": "invalid_request", "detail": str(exc), "request_id": self.request_id})
         except Exception as exc:
             status = 500
             log(service, "internal_error", request_id=self.request_id, error=str(exc))
             try:
-                self.send(status, {"error": "internal_error", "request_id": self.request_id})
+                status = self.send_business_response(
+                    status, {"error": "internal_error", "request_id": self.request_id})
             except OSError:
                 pass
         finally:

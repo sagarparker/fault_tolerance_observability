@@ -85,7 +85,7 @@ python3 -m scripts.demo --output /tmp/checkout-lab-evidence
 python3 -m unittest discover -s tests -v
 ```
 
-The demo starts its own two services on available local ports, performs **3 successful, 3 timed out, and 6 recovered checkouts**, and stops its child processes afterward. It changes the delay file from `0` to `0.8` to `0`, and asserts the expected status codes, shared request IDs, health after every request, process survival, correlated fault logs, declining cumulative error ratio, and recovering latency. It exits nonzero if a check fails. The integration test also checks the final counters and histogram counts in metrics captured from the real servers.
+The demo starts its own two services on available local ports, performs **3 successful, 3 timed out, and 6 recovered checkouts**, and stops its child processes afterward. It changes the delay file from `0` to `0.8` to `0`, and asserts the expected status codes, shared request IDs, health after every request, process survival, correlated fault logs, declining cumulative error ratio, and recovering latency (a mean below 100 ms). It exits nonzero if a check fails. The integration test also checks the final counters and histogram counts in metrics captured from the real servers. Three additional regression tests cover a dropped Payment connection (Checkout returns 502), invalid delay configuration (Payment returns 500), and invalid order input (400).
 
 The committed [terminal output](evidence/terminal.txt), [summary](evidence/summary.json), and [test output](evidence/tests.txt) were captured from actual runs with Python 3.13.14. UTC timestamps in the service logs correspond to November 17, 2026 in Pacific time. To replace the committed demo evidence with a new run, use `python3 -m scripts.demo` (default output: `evidence/`); measured times will vary.
 
@@ -97,7 +97,7 @@ The committed [terminal output](evidence/terminal.txt), [summary](evidence/summa
 | Failure | 800 ms | 3 × HTTP 504 | 100% | 3/6 = 50% | 303.487 ms |
 | Recovery | 0 ms | 6 × HTTP 200 | 0% | 3/12 = 25% | 2.251 ms |
 
-Excerpt from [terminal.txt](evidence/terminal.txt):
+Excerpt from [terminal.txt](evidence/terminal.txt) (response bodies trimmed):
 
 ```text
 POST /checkout X-Request-ID=success-01 -> HTTP 200 9.230ms
@@ -114,7 +114,7 @@ The full terminal file includes response bodies and results for all 12 requests.
 Search both JSON log files for the same ID:
 
 ```sh
-rg '"request_id": "failure-01"' evidence/checkout.jsonl evidence/payment.jsonl
+grep -h '"request_id": "failure-01"' evidence/checkout.jsonl evidence/payment.jsonl
 ```
 
 Selected actual entries, ordered here by timestamp:

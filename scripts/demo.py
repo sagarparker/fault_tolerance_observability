@@ -142,6 +142,8 @@ def run_demo(output):
                     "cumulative error ratio must decrease")
             require(phases[2]["mean_latency_ms"] < phases[1]["mean_latency_ms"],
                     "latency must recover")
+            require(phases[2]["mean_latency_ms"] < 100,
+                    "recovered mean latency must be below 100 ms (well below the 300 ms timeout)")
             (output / "summary.json").write_text(json.dumps(phases, indent=2) + "\n")
             note("\nPASS: success, timeout detection, health, shared IDs, metrics, and recovery verified.")
             return phases

@@ -5,6 +5,7 @@ import json
 import math
 import socket
 import time
+from http.client import HTTPException
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
@@ -34,6 +35,9 @@ class CheckoutHandler(Handler):
         except URLError as exc:
             if isinstance(exc.reason, (TimeoutError, socket.timeout)):
                 return self.timeout_result()
+            log("checkout", "payment_unavailable", request_id=self.request_id, error=str(exc))
+            return 502, {"error": "payment_unavailable"}
+        except (ConnectionError, HTTPException) as exc:
             log("checkout", "payment_unavailable", request_id=self.request_id, error=str(exc))
             return 502, {"error": "payment_unavailable"}
         except ValueError as exc:
