@@ -1,0 +1,30 @@
+{"timestamp": "2026-11-18T00:35:10.206966+00:00", "service": "payment", "event": "service_started", "port": 57606, "delay_file": "/var/folders/5j/8y2xzw397k920xzbvrj78j540000gn/T/checkout-lab-e0f83zqs/delay.txt"}
+{"timestamp": "2026-11-18T00:35:10.239974+00:00", "service": "payment", "event": "request_started", "request_id": "success-01", "method": "POST", "path": "/pay"}
+{"timestamp": "2026-11-18T00:35:10.240141+00:00", "service": "payment", "event": "request_completed", "request_id": "success-01", "status": 200, "duration_ms": 0.165}
+{"timestamp": "2026-11-18T00:35:10.241333+00:00", "service": "payment", "event": "request_started", "request_id": "success-02", "method": "POST", "path": "/pay"}
+{"timestamp": "2026-11-18T00:35:10.241438+00:00", "service": "payment", "event": "request_completed", "request_id": "success-02", "status": 200, "duration_ms": 0.102}
+{"timestamp": "2026-11-18T00:35:10.242378+00:00", "service": "payment", "event": "request_started", "request_id": "success-03", "method": "POST", "path": "/pay"}
+{"timestamp": "2026-11-18T00:35:10.242453+00:00", "service": "payment", "event": "request_completed", "request_id": "success-03", "status": 200, "duration_ms": 0.073}
+{"timestamp": "2026-11-18T00:35:10.244541+00:00", "service": "payment", "event": "request_started", "request_id": "failure-01", "method": "POST", "path": "/pay"}
+{"timestamp": "2026-11-18T00:35:10.244594+00:00", "service": "payment", "event": "delay_injected", "request_id": "failure-01", "delay_seconds": 0.8}
+{"timestamp": "2026-11-18T00:35:10.552207+00:00", "service": "payment", "event": "request_started", "request_id": "failure-02", "method": "POST", "path": "/pay"}
+{"timestamp": "2026-11-18T00:35:10.552785+00:00", "service": "payment", "event": "delay_injected", "request_id": "failure-02", "delay_seconds": 0.8}
+{"timestamp": "2026-11-18T00:35:10.856494+00:00", "service": "payment", "event": "request_started", "request_id": "failure-03", "method": "POST", "path": "/pay"}
+{"timestamp": "2026-11-18T00:35:10.856842+00:00", "service": "payment", "event": "delay_injected", "request_id": "failure-03", "delay_seconds": 0.8}
+{"timestamp": "2026-11-18T00:35:11.050519+00:00", "service": "payment", "event": "client_disconnected", "request_id": "failure-01"}
+{"timestamp": "2026-11-18T00:35:11.050804+00:00", "service": "payment", "event": "request_completed", "request_id": "failure-01", "status": 499, "duration_ms": 806.233}
+{"timestamp": "2026-11-18T00:35:11.354179+00:00", "service": "payment", "event": "request_completed", "request_id": "failure-02", "status": 200, "duration_ms": 801.946}
+{"timestamp": "2026-11-18T00:35:11.661927+00:00", "service": "payment", "event": "client_disconnected", "request_id": "failure-03"}
+{"timestamp": "2026-11-18T00:35:11.662179+00:00", "service": "payment", "event": "request_completed", "request_id": "failure-03", "status": 499, "duration_ms": 805.661}
+{"timestamp": "2026-11-18T00:35:12.077504+00:00", "service": "payment", "event": "request_started", "request_id": "recovery-01", "method": "POST", "path": "/pay"}
+{"timestamp": "2026-11-18T00:35:12.078256+00:00", "service": "payment", "event": "request_completed", "request_id": "recovery-01", "status": 200, "duration_ms": 0.742}
+{"timestamp": "2026-11-18T00:35:12.082681+00:00", "service": "payment", "event": "request_started", "request_id": "recovery-02", "method": "POST", "path": "/pay"}
+{"timestamp": "2026-11-18T00:35:12.083029+00:00", "service": "payment", "event": "request_completed", "request_id": "recovery-02", "status": 200, "duration_ms": 0.341}
+{"timestamp": "2026-11-18T00:35:12.085222+00:00", "service": "payment", "event": "request_started", "request_id": "recovery-03", "method": "POST", "path": "/pay"}
+{"timestamp": "2026-11-18T00:35:12.085411+00:00", "service": "payment", "event": "request_completed", "request_id": "recovery-03", "status": 200, "duration_ms": 0.184}
+{"timestamp": "2026-11-18T00:35:12.087207+00:00", "service": "payment", "event": "request_started", "request_id": "recovery-04", "method": "POST", "path": "/pay"}
+{"timestamp": "2026-11-18T00:35:12.087428+00:00", "service": "payment", "event": "request_completed", "request_id": "recovery-04", "status": 200, "duration_ms": 0.216}
+{"timestamp": "2026-11-18T00:35:12.089201+00:00", "service": "payment", "event": "request_started", "request_id": "recovery-05", "method": "POST", "path": "/pay"}
+{"timestamp": "2026-11-18T00:35:12.089387+00:00", "service": "payment", "event": "request_completed", "request_id": "recovery-05", "status": 200, "duration_ms": 0.181}
+{"timestamp": "2026-11-18T00:35:12.091050+00:00", "service": "payment", "event": "request_started", "request_id": "recovery-06", "method": "POST", "path": "/pay"}
+{"timestamp": "2026-11-18T00:35:12.091195+00:00", "service": "payment", "event": "request_completed", "request_id": "recovery-06", "status": 200, "duration_ms": 0.141}

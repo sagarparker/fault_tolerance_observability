@@ -1,0 +1,17 @@
+# HELP app_requests_total Completed business requests by outcome.
+# TYPE app_requests_total counter
+app_requests_total{service="payment",outcome="success"} 10
+app_requests_total{service="payment",outcome="failure"} 2
+# HELP app_request_duration_seconds Business request duration in seconds.
+# TYPE app_request_duration_seconds histogram
+app_request_duration_seconds_bucket{service="payment",le="0.005"} 9
+app_request_duration_seconds_bucket{service="payment",le="0.01"} 9
+app_request_duration_seconds_bucket{service="payment",le="0.05"} 9
+app_request_duration_seconds_bucket{service="payment",le="0.1"} 9
+app_request_duration_seconds_bucket{service="payment",le="0.25"} 9
+app_request_duration_seconds_bucket{service="payment",le="0.5"} 9
+app_request_duration_seconds_bucket{service="payment",le="1.0"} 12
+app_request_duration_seconds_bucket{service="payment",le="2.5"} 12
+app_request_duration_seconds_bucket{service="payment",le="+Inf"} 12
+app_request_duration_seconds_count{service="payment"} 12
+app_request_duration_seconds_sum{service="payment"} 2.415985
