@@ -1,20 +1,25 @@
-# Checkout → Payment: fault tolerance and observability lab
+# Checkout and Payment: fault tolerance and observability lab
 
 Two Python HTTP services demonstrate a successful checkout, a downstream timeout, and recovery without restarting either service. The repository includes source code, a reproducible experiment, an integration test, and captured terminal output, JSON logs, and metrics. Payment is a mock: no money is charged and no orders are persisted.
 
 ## Architecture
 
-```text
- Client
-   | POST /checkout {"order_id": "order-123"}
-   | X-Request-ID: demo-123 (generated if absent)
-   v
- Checkout :8000 -------------------------> Payment :8001
-   |          POST /pay, same request ID      |
-   |          downstream timeout: 300 ms      | optional delay: 800 ms
-   v                                         v
- JSON request logs                       JSON request logs
- GET /health, GET /metrics                GET /health, GET /metrics
+```mermaid
+flowchart TD
+    client["Client"]
+    checkout["Checkout Service :8000<br/>Payment timeout: 300 ms"]
+    payment["Payment Service :8001<br/>Optional injected delay: 800 ms"]
+    checkoutLogs["Checkout JSON request logs"]
+    paymentLogs["Payment JSON request logs"]
+    checkoutEndpoints["GET /health<br/>GET /metrics"]
+    paymentEndpoints["GET /health<br/>GET /metrics"]
+
+    client -->|"POST /checkout with order_id<br/>X-Request-ID supplied or generated"| checkout
+    checkout -->|"POST /pay<br/>Same X-Request-ID"| payment
+    checkout --> checkoutLogs
+    payment --> paymentLogs
+    checkout --- checkoutEndpoints
+    payment --- paymentEndpoints
 ```
 
 Checkout returns HTTP `200` when Payment succeeds, `504` on a downstream timeout, or `502` on a downstream connection/HTTP error. Both services use `ThreadingHTTPServer` so a delayed payment does not block other handlers. This small local lab binds to `127.0.0.1`; it needs neither containers nor a monitoring server.
